@@ -1,0 +1,1136 @@
+
+<Bundle xmlns="http://hl7.org/fhir">
+    <id value="example-get-medication-plan-bundle-1"/>
+    <identifier>
+        <system value="urn:ietf:rfc:3986"/>
+        <value value="urn:uuid:6da4d89d-09f9-4c9a-9117-10c7e7948566"/>
+    </identifier>
+    <type value="collection"/>
+    <timestamp value="2027-01-10T10:10:00Z"/>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/Patient/641f4cf5-e54b-406c-b8a8-1d3292fd5087"/>
+        <resource>
+            <Patient>
+                <id value="641f4cf5-e54b-406c-b8a8-1d3292fd5087"/>
+                <meta>
+                    <profile
+                            value="https://gematik.de/fhir/epa/StructureDefinition/epa-patient|1.3.0"/>
+                </meta>
+                <identifier>
+                    <system value="http://fhir.de/sid/gkv/kvid-10"/>
+                    <value value="X110411319"/>
+                </identifier>
+                <name>
+                    <use value="official"/>
+                    <family value="Mustermann"/>
+                    <given value="Max"/>
+                </name>
+                <gender value="male"/>
+                <birthDate value="1976-02-01"/>
+            </Patient>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/Provenanc/63e6938b-18a3-4b0f-9423-084d53edba7b"/>
+        <resource>
+            <Provenance>
+                <id value="63e6938b-18a3-4b0f-9423-084d53edba7b"/>
+                <meta>
+                    <profile
+                            value="https://gematik.de/fhir/epa-medication/StructureDefinition/emp-chronology-provenance|1.4.0"/>
+                </meta>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/is-emp-chronology-extension">
+                    <valueBoolean value="true"/>
+                </extension>
+                <target>
+                    <reference
+                            value="MedicationRequest/266620a9-2c26-41c1-b0cb-a10947b867f5/_history/2"/>
+                </target>
+                <target>
+                    <reference
+                            value="MedicationRequest/71b66f1b-8032-4886-b7bf-e775daee22fb/_history/1"/>
+                </target>
+                <occurredDateTime value="2026-11-01T15:43:33.244Z"/>
+                <recorded value="2026-11-01T15:43:33.244Z"/>
+                <activity>
+                    <coding>
+                        <system
+                                value="http://terminology.hl7.org/CodeSystem/v3-DataOperation"/>
+                        <code value="UPDATE"/>
+                    </coding>
+                </activity>
+                <agent>
+                    <type>
+                        <coding>
+                            <system
+                                    value="http://terminology.hl7.org/CodeSystem/provenance-participant-type"/>
+                            <code value="author"/>
+                        </coding>
+                    </type>
+                    <who>
+                        <reference
+                                value="Organization/450a9511-53e5-4af7-be36-a18444bb8dd2"/>
+                        <identifier>
+                            <type>
+                                <coding>
+                                    <system
+                                            value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+                                    <code value="PRN"/>
+                                </coding>
+                            </type>
+                            <system value="https://gematik.de/fhir/sid/telematik-id"/>
+                            <value value="9-2.58.00000089"/>
+                        </identifier>
+                        <display value="Die Hausarztpraxis"/>
+                    </who>
+                </agent>
+            </Provenance>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/MedicationRequest/266620a9-2c26-41c1-b0cb-a10947b867f5"/>
+        <resource>
+            <MedicationRequest>
+                <id value="266620a9-2c26-41c1-b0cb-a10947b867f5"/>
+                <meta>
+                    <versionId value="2"/>
+                    <lastUpdated value="2026-11-01T15:43:33.244Z"/>
+                    <profile
+                            value="https://gematik.de/fhir/epa-medication/StructureDefinition/emp-medication-request|1.4.0"/>
+                </meta>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/context-extension">
+                    <valueCode value="EMP"/>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/reason-patient-instruction-extension">
+                    <valueString
+                            value="akute Behandlung von Migräneanfällen mit und ohne Aura"/>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/patient-note-extension">
+                    <valueAnnotation>
+                        <text
+                                value="Bitte schützen Sie das Arzneimittel vor hohen Temperaturen und direkter Sonneneinstrahlung."/>
+                    </valueAnnotation>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/emp-origin-medication-extension">
+                    <valueReference>
+                        <reference
+                                value="Medication/87f08ba2-da7e-467e-86aa-404d9035297c"/>
+                    </valueReference>
+                </extension>
+                <extension
+                        url="http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction">
+                    <valueMarkdown
+                            value="vom 01.12.2026 bis zum 01.02.2027: 1-0-0-0 Stück"/>
+                </extension>
+                <extension
+                        url="http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta">
+                    <extension url="algorithmVersion">
+                        <valueString value="1.0.1"/>
+                    </extension>
+                    <extension url="language">
+                        <valueCode value="de-DE"/>
+                    </extension>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/emp-medicationrequest-activity-extension">
+                    <extension url="reference">
+                        <valueReference>
+                            <reference
+                                    value="MedicationStatement/f29f1d0c-be05-4b0d-a335-3e508da39c0c"/>
+                        </valueReference>
+                    </extension>
+                    <extension url="addedOn">
+                        <valueDateTime value="2026-11-01T15:43:33.244Z"/>
+                    </extension>
+                </extension>
+                <identifier>
+                    <system value="https://gematik.de/fhir/sid/emp-identifier"/>
+                    <value value="266620a9-2c26-41c1-b0cb-a10947b867f5"/>
+                </identifier>
+                <status value="active"/>
+                <intent value="plan"/>
+                <medicationReference>
+                    <reference value="Medication/fc7b28e8-05ac-4ac8-86d7-7677d9c6134e"/>
+                </medicationReference>
+                <subject>
+                    <identifier>
+                        <system value="http://fhir.de/sid/gkv/kvid-10"/>
+                        <value value="X110411319"/>
+                    </identifier>
+                </subject>
+                <authoredOn value="2026-11-01"/>
+                <reasonReference>
+                    <reference value="Condition/reason-migraene"/>
+                </reasonReference>
+                <note>
+                    <text value="Hinweis für den LE"/>
+                </note>
+                <dosageInstruction>
+                    <timing>
+                        <repeat>
+                            <boundsPeriod>
+                                <start value="2026-12-01"/>
+                                <end value="2027-02-01"/>
+                            </boundsPeriod>
+                            <frequency value="1"/>
+                            <period value="1"/>
+                            <periodUnit value="d"/>
+                            <when value="MORN"/>
+                        </repeat>
+                    </timing>
+                    <doseAndRate>
+                        <doseQuantity>
+                            <value value="1"/>
+                            <unit value="Stück"/>
+                            <system
+                                    value="https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT"/>
+                            <code value="1"/>
+                        </doseQuantity>
+                    </doseAndRate>
+                </dosageInstruction>
+            </MedicationRequest>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/Medication/87f08ba2-da7e-467e-86aa-404d9035297c"/>
+        <resource>
+            <Medication>
+                <id value="87f08ba2-da7e-467e-86aa-404d9035297c"/>
+                <meta>
+                    <versionId value="1"/>
+                    <lastUpdated value="2026-11-01T14:00:00.200Z"/>
+                    <profile
+                            value="https://gematik.de/fhir/epa-medication/StructureDefinition/emp-medication|1.4.0"/>
+                </meta>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/context-extension">
+                    <valueCode value="EMP"/>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/epa-medication-type-extension">
+                    <valueCoding>
+                        <system value="http://snomed.info/sct"/>
+                        <code value="781405001"/>
+                    </valueCoding>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/drug-category-extension">
+                    <valueCoding>
+                        <system
+                                value="https://gematik.de/fhir/epa-medication/CodeSystem/epa-drug-category-cs"/>
+                        <code value="00"/>
+                    </valueCoding>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/medication-id-vaccine-extension">
+                    <valueBoolean value="false"/>
+                </extension>
+                <extension url="http://fhir.de/StructureDefinition/normgroesse">
+                    <valueCode value="N1"/>
+                </extension>
+                <identifier>
+                    <system
+                            value="https://gematik.de/fhir/epa-medication/sid/epa-medication-unique-identifier"/>
+                    <value
+                            value="6CFD166CF22525CA74D6185E630F81DA871A62FD5AA074711B3B9BC36A61962F"/>
+                </identifier>
+                <code>
+                    <coding>
+                        <system value="http://fhir.de/CodeSystem/ifa/pzn"/>
+                        <code value="06313728"/>
+                    </coding>
+                    <text value="Sumatriptan-1a Pharma 100 mg Tabletten"/>
+                </code>
+                <status value="active"/>
+                <form>
+                    <coding>
+                        <system
+                                value="https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_KBV_DARREICHUNGSFORM"/>
+                        <code value="TAB"/>
+                        <display value="Tabletten"/>
+                    </coding>
+                </form>
+                <amount>
+                    <numerator>
+                        <extension
+                                url="https://gematik.de/fhir/epa-medication/StructureDefinition/medication-total-quantity-formulation-extension">
+                            <valueString value="20 St."/>
+                        </extension>
+                        <value value="20"/>
+                        <unit value="St"/>
+                    </numerator>
+                    <denominator>
+                        <value value="1"/>
+                    </denominator>
+                </amount>
+            </Medication>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/Provenance/9090b28c-e165-4823-b82b-15bb63012123"/>
+        <resource>
+            <Provenance>
+                <id value="9090b28c-e165-4823-b82b-15bb63012123"/>
+                <meta>
+                    <profile
+                            value="https://gematik.de/fhir/epa/StructureDefinition/epa-activity-provenance|1.3.0"/>
+                </meta>
+                <target>
+                    <reference
+                            value="MedicationRequest/266620a9-2c26-41c1-b0cb-a10947b867f5/_history/1"/>
+                </target>
+                <recorded value="2026-11-01T15:43:33.244Z"/>
+                <activity>
+                    <coding>
+                        <system
+                                value="http://terminology.hl7.org/CodeSystem/v3-DataOperation"/>
+                        <code value="UPDATE"/>
+                    </coding>
+                </activity>
+                <agent>
+                    <type>
+                        <coding>
+                            <system
+                                    value="http://terminology.hl7.org/CodeSystem/provenance-participant-type"/>
+                            <code value="author"/>
+                        </coding>
+                    </type>
+                    <who>
+                        <reference
+                                value="Organization/450a9511-53e5-4af7-be36-a18444bb8dd2"/>
+                        <identifier>
+                            <type>
+                                <coding>
+                                    <system
+                                            value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+                                    <code value="PRN"/>
+                                </coding>
+                            </type>
+                            <system value="https://gematik.de/fhir/sid/telematik-id"/>
+                            <value value="9-2.58.00000089"/>
+                        </identifier>
+                        <display value="Die Hausarztpraxis"/>
+                    </who>
+                </agent>
+            </Provenance>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/MedicationRequest/71b66f1b-8032-4886-b7bf-e775daee22fb"/>
+        <resource>
+            <MedicationRequest>
+                <id value="71b66f1b-8032-4886-b7bf-e775daee22fb"/>
+                <meta>
+                    <versionId value="1"/>
+                    <lastUpdated value="2026-12-01T14:00:00.400Z"/>
+                    <profile
+                            value="https://gematik.de/fhir/epa-medication/StructureDefinition/emp-medication-request|1.4.0"/>
+                </meta>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/context-extension">
+                    <valueCode value="EMP"/>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/reason-patient-instruction-extension">
+                    <valueString value="Bluthochdruck"/>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/patient-note-extension">
+                    <valueAnnotation>
+                        <text
+                                value="Benazepril kann anfangs Schwindel verursachen - daher zuerst in Ruhe einnehmen und Autofahren vermeiden."/>
+                    </valueAnnotation>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/emp-origin-medication-extension">
+                    <valueReference>
+                        <reference
+                                value="Medication/13c66845-d0ce-43e1-9b0b-884cbbe8df7f"/>
+                    </valueReference>
+                </extension>
+                <extension
+                        url="http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction">
+                    <valueMarkdown value="ab dem 01.12.2026: 1-0-1-0 Stück"/>
+                </extension>
+                <extension
+                        url="http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta">
+                    <extension url="algorithmVersion">
+                        <valueString value="1.0.1"/>
+                    </extension>
+                    <extension url="language">
+                        <valueCode value="de-DE"/>
+                    </extension>
+                </extension>
+                <identifier>
+                    <system value="https://gematik.de/fhir/sid/emp-identifier"/>
+                    <value value="71b66f1b-8032-4886-b7bf-e775daee22fb"/>
+                </identifier>
+                <status value="active"/>
+                <intent value="plan"/>
+                <medicationReference>
+                    <reference value="Medication/13c66845-d0ce-43e1-9b0b-884cbbe8df7f"/>
+                </medicationReference>
+                <subject>
+                    <identifier>
+                        <system value="http://fhir.de/sid/gkv/kvid-10"/>
+                        <value value="X110411319"/>
+                    </identifier>
+                </subject>
+                <authoredOn value="2026-12-01"/>
+                <reasonReference>
+                    <reference value="Condition/reason-hypertonie"/>
+                </reasonReference>
+                <note>
+                    <text value="Hinweis für den LE"/>
+                </note>
+                <dosageInstruction>
+                    <timing>
+                        <repeat>
+                            <boundsPeriod>
+                                <start value="2026-12-01"/>
+                            </boundsPeriod>
+                            <frequency value="2"/>
+                            <period value="1"/>
+                            <periodUnit value="d"/>
+                            <when value="MORN"/>
+                            <when value="EVE"/>
+                        </repeat>
+                    </timing>
+                    <doseAndRate>
+                        <doseQuantity>
+                            <value value="1"/>
+                            <unit value="Stück"/>
+                            <system
+                                    value="https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT"/>
+                            <code value="1"/>
+                        </doseQuantity>
+                    </doseAndRate>
+                </dosageInstruction>
+            </MedicationRequest>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/Medication/13c66845-d0ce-43e1-9b0b-884cbbe8df7f"/>
+        <resource>
+            <Medication>
+                <id value="13c66845-d0ce-43e1-9b0b-884cbbe8df7f"/>
+                <meta>
+                    <versionId value="1"/>
+                    <lastUpdated value="2026-12-01T14:00:00.200Z"/>
+                    <profile
+                            value="https://gematik.de/fhir/epa-medication/StructureDefinition/emp-medication|1.4.0"/>
+                </meta>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/context-extension">
+                    <valueCode value="EMP"/>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/epa-medication-type-extension">
+                    <valueCoding>
+                        <system value="http://snomed.info/sct"/>
+                        <code value="763158003"/>
+                    </valueCoding>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/drug-category-extension">
+                    <valueCoding>
+                        <system
+                                value="https://gematik.de/fhir/epa-medication/CodeSystem/epa-drug-category-cs"/>
+                        <code value="00"/>
+                    </valueCoding>
+                </extension>
+                <extension url="http://fhir.de/StructureDefinition/normgroesse">
+                    <valueCode value="N3"/>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/medication-id-vaccine-extension">
+                    <valueBoolean value="false"/>
+                </extension>
+                <identifier>
+                    <system
+                            value="https://gematik.de/fhir/epa-medication/sid/epa-medication-unique-identifier"/>
+                    <value
+                            value="EEAFC12F25D5FECB070B06D09D72C8A5C6F14933BDF3FC549483B94FE964B2C3"/>
+                </identifier>
+                <code>
+                    <coding>
+                        <system value="http://fhir.de/CodeSystem/ifa/pzn"/>
+                        <code value="04351736"/>
+                        <display value="Benazepril AL 20mg 98 Filmtabletten N3"/>
+                    </coding>
+                    <text value="Benazepril AL 20mg 98 Filmtabletten N3"/>
+                </code>
+                <status value="active"/>
+                <form>
+                    <coding>
+                        <system
+                                value="https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_KBV_DARREICHUNGSFORM"/>
+                        <code value="FTA"/>
+                    </coding>
+                </form>
+                <amount>
+                    <numerator>
+                        <extension
+                                url="https://gematik.de/fhir/epa-medication/StructureDefinition/medication-total-quantity-formulation-extension">
+                            <valueString value="98"/>
+                        </extension>
+                        <unit value="Stück"/>
+                    </numerator>
+                    <denominator>
+                        <value value="1"/>
+                    </denominator>
+                </amount>
+                <ingredient>
+                    <itemCodeableConcept>
+                        <coding>
+                            <system value="http://fhir.de/CodeSystem/ask"/>
+                            <code value="23413"/>
+                        </coding>
+                        <text value="Benazepril hydrochlorid"/>
+                    </itemCodeableConcept>
+                    <strength>
+                        <numerator>
+                            <value value="20"/>
+                            <unit value="mg"/>
+                        </numerator>
+                        <denominator>
+                            <value value="1"/>
+                            <unit value="Filmtbl."/>
+                        </denominator>
+                    </strength>
+                </ingredient>
+            </Medication>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/Provenance/8faa45dd-b2dc-4a80-8956-94aeab1db04b"/>
+        <resource>
+            <Provenance>
+                <id value="8faa45dd-b2dc-4a80-8956-94aeab1db04b"/>
+                <meta>
+                    <profile
+                            value="https://gematik.de/fhir/epa/StructureDefinition/epa-activity-provenance|1.3.0"/>
+                </meta>
+                <target>
+                    <reference
+                            value="MedicationRequest/71b66f1b-8032-4886-b7bf-e775daee22fb/_history/1"/>
+                </target>
+                <recorded value="2026-12-01T14:00:00.600Z"/>
+                <activity>
+                    <coding>
+                        <system
+                                value="http://terminology.hl7.org/CodeSystem/v3-DataOperation"/>
+                        <code value="CREATE"/>
+                    </coding>
+                </activity>
+                <agent>
+                    <type>
+                        <coding>
+                            <system
+                                    value="http://terminology.hl7.org/CodeSystem/provenance-participant-type"/>
+                            <code value="author"/>
+                        </coding>
+                    </type>
+                    <who>
+                        <reference
+                                value="Organization/450a9511-53e5-4af7-be36-a18444bb8dd2"/>
+                        <identifier>
+                            <type>
+                                <coding>
+                                    <system
+                                            value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+                                    <code value="PRN"/>
+                                </coding>
+                            </type>
+                            <system value="https://gematik.de/fhir/sid/telematik-id"/>
+                            <value value="9-2.58.00000089"/>
+                        </identifier>
+                        <display value="Die Hausarztpraxis"/>
+                    </who>
+                </agent>
+            </Provenance>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/MedicationStatement/f29f1d0c-be05-4b0d-a335-3e508da39c0c"/>
+        <resource>
+            <MedicationStatement>
+                <id value="f29f1d0c-be05-4b0d-a335-3e508da39c0c"/>
+                <meta>
+                    <versionId value="2"/>
+                    <lastUpdated value="2026-11-01T15:43:33.244Z"/>
+                    <profile
+                            value="https://gematik.de/fhir/epa-medication/StructureDefinition/epa-medication-statement|1.4.0"/>
+                </meta>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/rx-prescription-process-identifier-extension">
+                    <valueIdentifier>
+                        <system
+                                value="https://gematik.de/fhir/epa-medication/sid/rx-prescription-process-identifier"/>
+                        <value value="160.100.000.000.007.24_20261101"/>
+                    </valueIdentifier>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/context-extension">
+                    <valueCode value="PRESCRIPTION"/>
+                </extension>
+                <extension
+                        url="http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction">
+                    <valueMarkdown value="1-0-0-0 Stück"/>
+                </extension>
+                <extension
+                        url="http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta">
+                    <extension url="algorithmVersion">
+                        <valueString value="1.0.1"/>
+                    </extension>
+                    <extension url="language">
+                        <valueCode value="de-DE"/>
+                    </extension>
+                </extension>
+                <basedOn>
+                    <extension
+                            url="https://gematik.de/fhir/epa-medication/StructureDefinition/is-emp-extension">
+                        <valueBoolean value="true"/>
+                    </extension>
+                    <reference
+                            value="MedicationRequest/266620a9-2c26-41c1-b0cb-a10947b867f5"/>
+                </basedOn>
+                <status value="unknown"/>
+                <medicationReference>
+                    <reference value="Medication/fc7b28e8-05ac-4ac8-86d7-7677d9c6134e"/>
+                </medicationReference>
+                <subject>
+                    <identifier>
+                        <system value="http://fhir.de/sid/gkv/kvid-10"/>
+                        <value value="X110411319"/>
+                    </identifier>
+                </subject>
+                <effectivePeriod>
+                    <start value="2025-11-01"/>
+                </effectivePeriod>
+                <dateAsserted value="2026-11-01"/>
+                <derivedFrom>
+                    <reference
+                            value="MedicationRequest/4dd6f19d-002c-44ac-ae2f-3c9d08ad35b8"/>
+                </derivedFrom>
+                <derivedFrom>
+                    <reference
+                            value="MedicationDispense/fa0c29e1-c4e7-4f08-91ab-598a2233867c"/>
+                </derivedFrom>
+                <dosage>
+                    <timing>
+                        <repeat>
+                            <frequency value="1"/>
+                            <period value="1"/>
+                            <periodUnit value="d"/>
+                            <when value="MORN"/>
+                        </repeat>
+                    </timing>
+                    <doseAndRate>
+                        <doseQuantity>
+                            <value value="1"/>
+                            <unit value="Stück"/>
+                            <system
+                                    value="https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT"/>
+                            <code value="1"/>
+                        </doseQuantity>
+                    </doseAndRate>
+                </dosage>
+            </MedicationStatement>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/Provenance/176eec9c-8d5a-46a7-96e3-7af3f68c49ed"/>
+        <resource>
+            <Provenance>
+                <id value="176eec9c-8d5a-46a7-96e3-7af3f68c49ed"/>
+                <meta>
+                    <profile
+                            value="https://gematik.de/fhir/epa/StructureDefinition/epa-activity-provenance|1.3.0"/>
+                </meta>
+                <target>
+                    <reference
+                            value="MedicationStatement/f29f1d0c-be05-4b0d-a335-3e508da39c0c/_history/2"/>
+                </target>
+                <recorded value="2026-11-01T15:43:33.244Z"/>
+                <activity>
+                    <coding>
+                        <system
+                                value="http://terminology.hl7.org/CodeSystem/v3-DataOperation"/>
+                        <code value="UPDATE"/>
+                    </coding>
+                </activity>
+                <agent>
+                    <type>
+                        <coding>
+                            <system
+                                    value="http://terminology.hl7.org/CodeSystem/provenance-participant-type"/>
+                            <code value="author"/>
+                        </coding>
+                    </type>
+                    <who>
+                        <identifier>
+                            <system
+                                    value="https://gematik.de/fhir/sid/epa-fhir-data-service"/>
+                            <value value="MEDICATIONSVC"/>
+                        </identifier>
+                        <display value="ePA Medication Service"/>
+                    </who>
+                </agent>
+            </Provenance>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/Medication/fc7b28e8-05ac-4ac8-86d7-7677d9c6134e"/>
+        <resource>
+            <Medication>
+                <id value="fc7b28e8-05ac-4ac8-86d7-7677d9c6134e"/>
+                <meta>
+                    <versionId value="2"/>
+                    <lastUpdated value="2026-11-01T14:43:33.244Z"/>
+                    <profile
+                            value="https://gematik.de/fhir/epa-medication/StructureDefinition/epa-medication|1.4.0"/>
+                </meta>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/rx-prescription-process-identifier-extension">
+                    <valueIdentifier>
+                        <system
+                                value="https://gematik.de/fhir/epa-medication/sid/rx-prescription-process-identifier"/>
+                        <value value="160.100.000.000.007.24_20261101"/>
+                    </valueIdentifier>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/epa-medication-type-extension">
+                    <valueCoding>
+                        <system value="http://snomed.info/sct"/>
+                        <code value="781405001"/>
+                    </valueCoding>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/drug-category-extension">
+                    <valueCoding>
+                        <system
+                                value="https://gematik.de/fhir/epa-medication/CodeSystem/epa-drug-category-cs"/>
+                        <code value="00"/>
+                    </valueCoding>
+                </extension>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/medication-id-vaccine-extension">
+                    <valueBoolean value="false"/>
+                </extension>
+                <extension url="http://fhir.de/StructureDefinition/normgroesse">
+                    <valueCode value="N1"/>
+                </extension>
+                <identifier>
+                    <system
+                            value="https://gematik.de/fhir/epa-medication/sid/epa-medication-unique-identifier"/>
+                    <value
+                            value="6CFD166CF22525CA74D6185E630F81DA871A62FD5AA074711B3B9BC36A61962F"/>
+                </identifier>
+                <identifier>
+                    <system
+                            value="https://gematik.de/fhir/epa-medication/sid/rx-originator-process-identifier"/>
+                    <value
+                            value="a3197c39-d03c-45fa-bcb7-b32578143c56_160.100.000.000.007.24"/>
+                </identifier>
+                <code>
+                    <coding>
+                        <system value="http://fhir.de/CodeSystem/ifa/pzn"/>
+                        <code value="06313728"/>
+                    </coding>
+                    <text value="Sumatriptan-1a Pharma 100 mg Tabletten"/>
+                </code>
+                <status value="active"/>
+                <form>
+                    <coding>
+                        <system
+                                value="https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_KBV_DARREICHUNGSFORM"/>
+                        <code value="TAB"/>
+                        <display value="Tabletten"/>
+                    </coding>
+                </form>
+                <amount>
+                    <numerator>
+                        <extension
+                                url="https://gematik.de/fhir/epa-medication/StructureDefinition/medication-total-quantity-formulation-extension">
+                            <valueString value="20 St."/>
+                        </extension>
+                        <value value="20"/>
+                        <unit value="St"/>
+                    </numerator>
+                    <denominator>
+                        <value value="1"/>
+                    </denominator>
+                </amount>
+            </Medication>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/MedicationRequest/4dd6f19d-002c-44ac-ae2f-3c9d08ad35b8"/>
+        <resource>
+            <MedicationRequest>
+                <id value="4dd6f19d-002c-44ac-ae2f-3c9d08ad35b8"/>
+                <meta>
+                    <versionId value="2"/>
+                    <lastUpdated value="2026-11-01T14:43:33.244Z"/>
+                    <profile
+                            value="https://gematik.de/fhir/epa-medication/StructureDefinition/epa-medication-request|1.4.0"/>
+                </meta>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/multiple-prescription-extension">
+                    <extension url="indicator">
+                        <valueBoolean value="false"/>
+                    </extension>
+                </extension>
+                <extension
+                        url="http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction">
+                    <valueMarkdown value="1-0-0-0 Stück"/>
+                </extension>
+                <extension
+                        url="http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta">
+                    <extension url="algorithmVersion">
+                        <valueString value="1.0.1"/>
+                    </extension>
+                    <extension url="language">
+                        <valueCode value="de-DE"/>
+                    </extension>
+                </extension>
+                <identifier>
+                    <system
+                            value="https://gematik.de/fhir/epa-medication/sid/rx-prescription-process-identifier"/>
+                    <value value="160.100.000.000.007.24_20250425"/>
+                </identifier>
+                <identifier>
+                    <system
+                            value="https://gematik.de/fhir/epa-medication/sid/rx-originator-process-identifier"/>
+                    <value
+                            value="5f4bc41c-480e-4ee4-b58e-a99268c1a1d0_160.100.000.000.007.24"/>
+                </identifier>
+                <status value="active"/>
+                <intent value="filler-order"/>
+                <medicationReference>
+                    <reference value="Medication/fc7b28e8-05ac-4ac8-86d7-7677d9c6134e"/>
+                </medicationReference>
+                <subject>
+                    <identifier>
+                        <system value="http://fhir.de/sid/gkv/kvid-10"/>
+                        <value value="X110411319"/>
+                    </identifier>
+                </subject>
+                <authoredOn value="2026-11-01"/>
+                <requester>
+                    <reference
+                            value="PractitionerRole/73a551f8-d8cd-4b44-823d-ab5f8aeab1aa"/>
+                    <display
+                            value="Dr. Max Manfred Mustermann / Praxis Dr. med. Max Mustermann"/>
+                </requester>
+                <basedOn>
+                    <identifier>
+                        <system value="https://gematik.de/fhir/sid/emp-identifier"/>
+                        <value value="4dd6f19d-002c-44ac-ae2f-3c9d08ad35b8"/>
+                    </identifier>
+                </basedOn>
+                <dosageInstruction>
+                    <timing>
+                        <repeat>
+                            <frequency value="1"/>
+                            <period value="1"/>
+                            <periodUnit value="d"/>
+                            <when value="MORN"/>
+                        </repeat>
+                    </timing>
+                    <doseAndRate>
+                        <doseQuantity>
+                            <value value="1"/>
+                            <unit value="Stück"/>
+                            <system
+                                    value="https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT"/>
+                            <code value="1"/>
+                        </doseQuantity>
+                    </doseAndRate>
+                </dosageInstruction>
+                <dispenseRequest>
+                    <quantity>
+                        <value value="1"/>
+                        <system value="http://unitsofmeasure.org"/>
+                        <code value="{Package}"/>
+                    </quantity>
+                </dispenseRequest>
+                <substitution>
+                    <allowedBoolean value="true"/>
+                </substitution>
+            </MedicationRequest>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/MedicationDispense/fa0c29e1-c4e7-4f08-91ab-598a2233867c"/>
+        <resource>
+            <MedicationDispense>
+                <id value="fa0c29e1-c4e7-4f08-91ab-598a2233867c"/>
+                <meta>
+                    <versionId value="1"/>
+                    <lastUpdated value="2026-11-01T15:43:33.244Z"/>
+                    <profile
+                            value="https://gematik.de/fhir/epa-medication/StructureDefinition/epa-medication-dispense|1.4.0"/>
+                </meta>
+                <extension
+                        url="https://gematik.de/fhir/epa-medication/StructureDefinition/rx-prescription-process-identifier-extension">
+                    <valueIdentifier>
+                        <system
+                                value="https://gematik.de/fhir/epa-medication/sid/rx-prescription-process-identifier"/>
+                        <value value="160.100.000.000.007.24_20261101"/>
+                    </valueIdentifier>
+                </extension>
+                <identifier>
+                    <system
+                            value="https://gematik.de/fhir/epa-medication/sid/epa-dispense-unique-identifier"/>
+                    <value
+                            value="23264AE498B6B41603EDB76725B0B6602BAB4614C7DCC05937F12A8C21BF010D"/>
+                </identifier>
+                <identifier>
+                    <system
+                            value="https://gematik.de/fhir/epa-medication/sid/rx-originator-process-identifier"/>
+                    <value
+                            value="1da91bd3-d5cb-459b-a270-32fad7d5d5d5_160.100.000.000.007.24"/>
+                </identifier>
+                <status value="completed"/>
+                <medicationReference>
+                    <reference value="Medication/fc7b28e8-05ac-4ac8-86d7-7677d9c6134e"/>
+                </medicationReference>
+                <subject>
+                    <identifier>
+                        <system value="http://fhir.de/sid/gkv/kvid-10"/>
+                        <value value="X110411319"/>
+                    </identifier>
+                </subject>
+                <performer>
+                    <actor>
+                        <reference
+                                value="Organization/151f1697-7512-4e21-9466-1b75207475d8"/>
+                        <identifier>
+                            <type>
+                                <coding>
+                                    <system
+                                            value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+                                    <code value="PRN"/>
+                                    <display value="Provider number"/>
+                                </coding>
+                            </type>
+                            <system value="https://gematik.de/fhir/sid/telematik-id"/>
+                            <value value="9-2.58.00000023"/>
+                        </identifier>
+                        <display value="gematik Apotheke"/>
+                    </actor>
+                </performer>
+                <authorizingPrescription>
+                    <reference
+                            value="MedicationRequest/4dd6f19d-002c-44ac-ae2f-3c9d08ad35b8"/>
+                </authorizingPrescription>
+                <whenHandedOver value="2026-11-01"/>
+                <substitution>
+                    <wasSubstituted value="false"/>
+                </substitution>
+            </MedicationDispense>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/PractitionerRole/b9eb9668-b61e-43b5-b3ea-485234836d59"/>
+        <resource>
+            <PractitionerRole>
+                <id value="b9eb9668-b61e-43b5-b3ea-485234836d59"/>
+                <practitioner>
+                    <reference
+                            value="Practitioner/498c345f-31f5-4da6-9f04-00fa2bc8af7c"/>
+                    <identifier>
+                        <type>
+                            <coding>
+                                <system
+                                        value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+                                <code value="PRN"/>
+                                <display value="Provider number"/>
+                            </coding>
+                        </type>
+                        <system value="https://gematik.de/fhir/sid/telematik-id"/>
+                        <value value="1-1.58.00000056"/>
+                    </identifier>
+                    <display value="Dr. Max Manfred Mustermann"/>
+                </practitioner>
+                <organization>
+                    <reference
+                            value="Organization/450a9511-53e5-4af7-be36-a18444bb8dd2"/>
+                    <identifier>
+                        <type>
+                            <coding>
+                                <system
+                                        value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+                                <code value="PRN"/>
+                                <display value="Provider number"/>
+                            </coding>
+                        </type>
+                        <system value="https://gematik.de/fhir/sid/telematik-id"/>
+                        <value value="9-2.58.00000089"/>
+                    </identifier>
+                    <display value="Die Hausarztpraxis"/>
+                </organization>
+            </PractitionerRole>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/Organization/450a9511-53e5-4af7-be36-a18444bb8dd2"/>
+        <resource>
+            <Organization>
+                <id value="450a9511-53e5-4af7-be36-a18444bb8dd2"/>
+                <meta>
+                    <profile
+                            value="https://gematik.de/fhir/ti/StructureDefinition/ti-organization|1.5.0"/>
+                </meta>
+                <identifier>
+                    <system value="https://gematik.de/fhir/sid/telematik-id"/>
+                    <value value="9-2.58.00000089"/>
+                </identifier>
+                <identifier>
+                    <system value="https://fhir.kbv.de/NamingSystem/KBV_NS_Base_BSNR"/>
+                    <value value="721111100"/>
+                </identifier>
+                <active value="true"/>
+                <type>
+                    <coding>
+                        <system
+                                value="https://gematik.de/fhir/directory/CodeSystem/OrganizationProfessionOID"/>
+                        <code value="1.2.276.0.76.4.50"/>
+                        <display value="Betriebsstätte Arzt"/>
+                    </coding>
+                </type>
+                <name value="Die Hausarztpraxis"/>
+                <address>
+                    <text value="Friedrichstr. 136,
+10117 Berlin"/>
+                    <line value="Friedrichstr. 136"/>
+                    <city value="Berlin"/>
+                    <district value="Mitte"/>
+                    <state value="Berlin"/>
+                    <postalCode value="10117"/>
+                    <country value="DE"/>
+                </address>
+                <contact>
+                    <telecom>
+                        <system value="phone"/>
+                        <value value="0301234567"/>
+                    </telecom>
+                    <telecom>
+                        <system value="fax"/>
+                        <value value="030123456789"/>
+                    </telecom>
+                    <telecom>
+                        <system value="email"/>
+                        <value value="hausarztpraxis@example.com"/>
+                    </telecom>
+                </contact>
+            </Organization>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/Practitioner/498c345f-31f5-4da6-9f04-00fa2bc8af7c"/>
+        <resource>
+            <Practitioner>
+                <id value="498c345f-31f5-4da6-9f04-00fa2bc8af7c"/>
+                <meta>
+                    <profile
+                            value="https://gematik.de/fhir/ti/StructureDefinition/ti-practitioner|1.5.0"/>
+                </meta>
+                <identifier>
+                    <system value="https://gematik.de/fhir/sid/telematik-id"/>
+                    <value value="1-1.58.00000056"/>
+                </identifier>
+                <identifier>
+                    <system value="https://fhir.kbv.de/NamingSystem/KBV_NS_Base_ANR"/>
+                    <value value="123456789"/>
+                </identifier>
+                <active value="true"/>
+                <name>
+                    <text value="Dr. Max Manfred Mustermann"/>
+                    <family value="Musterman"/>
+                    <given value="Max"/>
+                    <given value="Manfred"/>
+                    <prefix value="Dr."/>
+                </name>
+            </Practitioner>
+        </resource>
+    </entry>
+    <entry>
+        <fullUrl
+                value="http://epa4all/epa/medication/api/v1/fhir/Organization/151f1697-7512-4e21-9466-1b75207475d8"/>
+        <resource>
+            <Organization>
+                <id value="151f1697-7512-4e21-9466-1b75207475d8"/>
+                <meta>
+                    <profile
+                            value="https://gematik.de/fhir/ti/StructureDefinition/ti-organization|1.5.0"/>
+                </meta>
+                <identifier>
+                    <system value="https://gematik.de/fhir/sid/telematik-id"/>
+                    <value value="9-2.58.00000023"/>
+                </identifier>
+                <active value="true"/>
+                <type>
+                    <coding>
+                        <system
+                                value="https://gematik.de/fhir/directory/CodeSystem/OrganizationProfessionOID"/>
+                        <code value="1.2.276.0.76.4.54"/>
+                        <display value="Öffentliche Apotheke"/>
+                    </coding>
+                </type>
+                <name value="gematik Apotheke"/>
+                <alias value="Apotheke"/>
+                <address>
+                    <text value="gematik Apotheke
+Friedrichstr. 136,
+10117 Berlin"/>
+                    <line value="Friedrichstr. 136"/>
+                    <city value="Berlin"/>
+                    <district value="Mitte"/>
+                    <state value="Berlin"/>
+                    <postalCode value="10117"/>
+                    <country value="DE"/>
+                </address>
+                <contact>
+                    <purpose>
+                        <coding>
+                            <system
+                                    value="http://terminology.hl7.org/CodeSystem/contactentity-type"/>
+                            <code value="ADMIN"/>
+                        </coding>
+                    </purpose>
+                    <name>
+                        <text value="gematik ITSM"/>
+                    </name>
+                    <telecom>
+                        <system value="email"/>
+                        <value value="betrieb@gematik.de"/>
+                    </telecom>
+                </contact>
+            </Organization>
+        </resource>
+    </entry>
+</Bundle>
