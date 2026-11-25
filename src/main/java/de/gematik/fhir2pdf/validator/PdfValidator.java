@@ -38,6 +38,8 @@ import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.results.ValidationResult;
 
 /** Checks whether a PDF document meets the standard for long-term archiving. */
+
+/** Advised to read README.md. */
 @Slf4j
 @UtilityClass
 public class PdfValidator {

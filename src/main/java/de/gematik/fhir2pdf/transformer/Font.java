@@ -26,7 +26,7 @@ package de.gematik.fhir2pdf.transformer;
  */
 
 import de.gematik.fhir2pdf.util.ResourceUtil;
-import java.nio.file.Path;
+import java.net.URI;
 import lombok.Getter;
 
 @Getter
@@ -38,12 +38,12 @@ enum Font {
 
   private final String name;
   private final String weight;
-  private final Path path;
+  private final URI uri;
 
   Font(String name, String weight, String filePath) {
     this.name = name;
     this.weight = weight;
-    this.path = ResourceUtil.get(filePath);
+    this.uri = ResourceUtil.getUri(filePath);
   }
 
   String getXml() {
@@ -52,6 +52,6 @@ enum Font {
       <font-triplet name="%s" style="normal" weight="%s"/>
     </font>\
     """
-        .formatted(path.toUri(), name, weight);
+        .formatted(uri, name, weight);
   }
 }

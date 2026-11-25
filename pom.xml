@@ -60,7 +60,7 @@
         <version.apache.xmlgraphics>2.12</version.apache.xmlgraphics>
         <version.lombok>1.18.48</version.lombok>
         <version.slf4j>2.0.20</version.slf4j>
-        <version.logback>1.6.6</version.logback>
+        <version.logback>1.6.8</version.logback>
         <version.saxonHe>13.1</version.saxonHe>
         <version.junit.jupiter>6.1.3</version.junit.jupiter>
         <version.assertj>3.27.7</version.assertj>

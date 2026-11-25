@@ -31,11 +31,11 @@ import org.verapdf.pdfa.results.ValidationResult;
 /**
  * The outcome of turning one health record into a PDF and checking it.
  *
- * @param input the processed health record
+ * @param input the processed health record, as file path or classpath resource name
  * @param output the generated PDF, or {@code null} if the transformation failed
  * @param validationResult the archiving check result, or {@code null} if it failed
  */
-public record Transformation(Path input, Path output, ValidationResult validationResult) {
+public record Transformation(String input, Path output, ValidationResult validationResult) {
 
   /**
    * Tells whether the PDF meets the archiving standard.

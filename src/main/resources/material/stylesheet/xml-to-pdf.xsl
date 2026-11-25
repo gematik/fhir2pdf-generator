@@ -333,16 +333,23 @@
   </xsl:function>
 
   <!-- Feld einer Tabellenzeile (IG-MED20994Z5N-01): 12 pt einzeilig, sonst 10 pt (ein bis zwei Zeilen), danach wächst die Höhe.
+       ABWEICHUNG: Eine Zahl (z. B. Dosis "0,75") wird nie umbrochen; passt sie bei 10 pt nicht, wird die Schrift
+       bis herunter auf 6 pt verkleinert (nur wenn auch das nicht reicht, greift der Zeichenumbruch).
        Ergebnis: pt, lines, h (Feldhöhe in mm) -->
   <xsl:function name="f:field" as="map(*)">
     <xsl:param name="text" as="xs:string*"/>
     <xsl:param name="avail" as="xs:double"/>
     <xsl:variable name="t" select="normalize-space(string-join($text, ' '))"/>
-    <xsl:variable name="pt" as="xs:integer" select="if (f:tw($t, 'regular', 12) le $avail) then 12 else 10"/>
+    <xsl:variable name="number" as="xs:boolean" select="matches($t, '^\d+([,.]\d+)?$')"/>
+    <xsl:variable name="pt" as="xs:integer"
+                  select="if (f:tw($t, 'regular', 12) le $avail) then 12
+                          else if ($number) then ((for $p in (10, 9, 8, 7, 6) return if (f:tw($t, 'regular', $p) le $avail) then $p else ()), 6)[1]
+                          else 10"/>
     <xsl:variable name="lines" as="xs:string*"
-                  select="if ($t eq '') then () else if ($pt eq 12) then $t else f:wrap($t, 'regular', 10, $avail)"/>
+                  select="if ($t eq '') then () else if ($pt eq 12 or ($number and f:tw($t, 'regular', $pt) le $avail)) then $t else f:wrap($t, 'regular', $pt, $avail)"/>
     <xsl:sequence select="map{'pt': $pt, 'lines': $lines, 'h': count($lines) * $LH * $pt * $PT-MM}"/>
   </xsl:function>
+
 
   <!-- Form (IG-MED19844CVF-01): höchstens zwei Zeilen, vom Ende her gekürzt und mit "..." ergänzt -->
   <xsl:function name="f:field-form" as="map(*)">
