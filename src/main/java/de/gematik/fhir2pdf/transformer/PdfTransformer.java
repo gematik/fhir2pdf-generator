@@ -30,13 +30,18 @@ import de.gematik.fhir2pdf.util.ResourceUtil;
 import de.gematik.fhir2pdf.util.Util;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
+import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.Callable;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Result;
@@ -73,35 +78,8 @@ public class PdfTransformer {
    * @return the generated PDF, or {@code null} if {@code input} is {@code null} or the
    *     transformation failed
    */
-  @SneakyThrows
   public Path transform(Path input, Path stylesheet) {
-    log.info("Transforming input:\t{}", input);
-    if (input == null) {
-      log.warn("Input is null, skipping transformation.");
-      return null;
-    }
-
-    var pdfName = Util.createPdfName(input);
-    var output = Util.createPdf(pdfName);
-
-    try (var os = Files.newOutputStream(output);
-        var pdf = new BufferedOutputStream(os)) {
-
-      var extension = Extension.fromPath(input);
-      var xmlSource =
-          switch (extension) {
-            case XML -> toSource(input);
-            case JSON -> toXmlSource(input);
-            default -> throw new IllegalArgumentException("Unsupported input type: " + extension);
-          };
-      applyStylesheet(xmlSource, stylesheet, new SAXResult(newFop(pdf).getDefaultHandler()));
-    } catch (Exception e) {
-      log.error("Error during transformation of input: {}", input, e);
-      return null;
-    }
-
-    log.info("Generated PDF at:\t{}", output);
-    return output;
+    return renderFile(input, () -> Content.ofFile(stylesheet));
   }
 
   /**
@@ -112,35 +90,130 @@ public class PdfTransformer {
    *     transformation failed
    */
   public Path transform(Path input) {
-    return transform(input, ResourceUtil.get(DEFAULT_STYLESHEET));
+    return renderFile(input, () -> Content.ofResource(DEFAULT_STYLESHEET));
+  }
+
+  /**
+   * Creates a PDF from a health record packaged inside the application, using the standard layout.
+   *
+   * @param inputResource the classpath-relative name of the FHIR input file (XML or JSON), e.g.
+   *     {@code input/emp.xml}
+   * @return the generated PDF, or {@code null} if the resource does not exist or the transformation
+   *     failed
+   */
+  public Path transform(String inputResource) {
+    return render(
+        inputResource,
+        () -> Content.ofResource(inputResource),
+        () -> Content.ofResource(DEFAULT_STYLESHEET));
+  }
+
+  private Path renderFile(Path input, Callable<Content> stylesheetLoader) {
+    if (input == null) {
+      log.info("Transforming input:\t{}", (Object) null);
+      log.warn("Input is null, skipping transformation.");
+      return null;
+    }
+    return render(input.toString(), () -> Content.ofFile(input), stylesheetLoader);
+  }
+
+  private Path render(
+      String label, Callable<Content> inputLoader, Callable<Content> stylesheetLoader) {
+    log.info("Transforming input:\t{}", label);
+    Content input;
+    Content stylesheet;
+    try {
+      input = inputLoader.call();
+      stylesheet = stylesheetLoader.call();
+    } catch (Exception e) {
+      log.error("Error reading input or stylesheet of: {}", label, e);
+      return null;
+    }
+
+    var output = Util.createPdf(Util.createPdfName(Path.of(input.name())));
+    try (var os = Files.newOutputStream(output);
+        var pdf = new BufferedOutputStream(os)) {
+
+      var extension = Extension.fromPath(Path.of(input.name()));
+      var xmlSource =
+          switch (extension) {
+            case XML -> input.toSource();
+            case JSON -> toXmlSource(input);
+            default -> throw new IllegalArgumentException("Unsupported input type: " + extension);
+          };
+      applyStylesheet(xmlSource, stylesheet, new SAXResult(newFop(pdf).getDefaultHandler()));
+    } catch (Exception e) {
+      log.error("Error during transformation of input: {}", label, e);
+      return null;
+    }
+
+    log.info("Generated PDF at:\t{}", output);
+    return output;
   }
 
   @SneakyThrows
-  private void applyStylesheet(Source xmlSource, Path stylesheet, Result target) {
-    log.info("Applying XML stylesheet:\t{}", stylesheet);
-    Extension.XSL.check(Util.getFilename(stylesheet));
-    var stylesheetSource = toSource(stylesheet);
-    var transformer = TRANSFORMER_FACTORY.newTransformer(stylesheetSource);
+  private void applyStylesheet(Source xmlSource, Content stylesheet, Result target) {
+    log.info("Applying XML stylesheet:\t{}", stylesheet.systemId());
+    Extension.XSL.check(stylesheet.name());
+    var transformer = TRANSFORMER_FACTORY.newTransformer(stylesheet.toSource());
     transformer.setParameter("creationDateTime", LocalDateTime.now().format(DATE_FORMAT));
     transformer.transform(xmlSource, target);
   }
 
   @SneakyThrows
-  private Source toXmlSource(Path json) {
-    Extension.JSON.check(Util.getFilename(json));
-    var stylesheet = ResourceUtil.get(JSON_TO_XML_XSL);
-    log.info("Applying JSON stylesheet:\t{}", stylesheet);
-    var transformer = TRANSFORMER_FACTORY.newTransformer(toSource(stylesheet));
-    transformer.setParameter("json", Files.readString(json, StandardCharsets.UTF_8));
+  private Source toXmlSource(Content json) {
+    Extension.JSON.check(json.name());
+    var stylesheet = Content.ofResource(JSON_TO_XML_XSL);
+    log.info("Applying JSON stylesheet:\t{}", stylesheet.systemId());
+    var transformer = TRANSFORMER_FACTORY.newTransformer(stylesheet.toSource());
+    transformer.setParameter("json", json.asString());
     var xml = new DOMResult();
     transformer.transform(new DOMSource(newEmptyDocument()), xml);
     return new DOMSource(xml.getNode());
   }
 
-  @SneakyThrows
-  private StreamSource toSource(Path path) {
-    return new StreamSource(
-        new ByteArrayInputStream(Files.readAllBytes(path)), path.toUri().toString());
+  /** A file that was read completely: from disk or from inside the application. */
+  private static final class Content {
+    private final String name;
+    private final String systemId;
+    private final byte[] bytes;
+
+    private Content(String name, String systemId, byte[] bytes) {
+      this.name = name;
+      this.systemId = systemId;
+      this.bytes = bytes;
+    }
+
+    String name() {
+      return name;
+    }
+
+    String systemId() {
+      return systemId;
+    }
+
+    static Content ofFile(Path path) throws IOException {
+      return new Content(Util.getFilename(path), path.toUri().toString(), Files.readAllBytes(path));
+    }
+
+    static Content ofResource(String resource) throws IOException {
+      var bytes = ResourceUtil.read(resource);
+      if (bytes == null) {
+        throw new FileNotFoundException("Resource not found: " + resource);
+      }
+      return new Content(
+          resource.substring(resource.lastIndexOf('/') + 1),
+          ResourceUtil.getUri(resource).toString(),
+          bytes);
+    }
+
+    StreamSource toSource() {
+      return new StreamSource(new ByteArrayInputStream(bytes), systemId);
+    }
+
+    String asString() throws CharacterCodingException {
+      return StandardCharsets.UTF_8.newDecoder().decode(ByteBuffer.wrap(bytes)).toString();
+    }
   }
 
   @SneakyThrows

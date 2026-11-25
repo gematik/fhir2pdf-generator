@@ -64,10 +64,10 @@ class FopConfigUtilTest {
             """
                 .formatted(
                     "PDF/A-2b",
-                    Font.REGULAR.getPath().toUri(),
-                    Font.BOLD.getPath().toUri(),
-                    Font.NARROW.getPath().toUri(),
-                    Font.NARROW_BOLD.getPath().toUri()));
+                    Font.REGULAR.getUri(),
+                    Font.BOLD.getUri(),
+                    Font.NARROW.getUri(),
+                    Font.NARROW_BOLD.getUri()));
   }
 
   @Test
@@ -89,7 +89,7 @@ class FopConfigUtilTest {
               </renderers>
             </fop>
             """
-                .formatted(Font.REGULAR.getPath().toUri()));
+                .formatted(Font.REGULAR.getUri()));
   }
 
   @Test

@@ -28,8 +28,13 @@ package de.gematik.fhir2pdf.util;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
+import java.net.URI;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -43,13 +48,14 @@ class ResourceUtilTest {
         "material/ttf/LiberationSansNarrow-Regular.ttf",
       })
   void loadTtf(String resource) {
-    assertThat(ResourceUtil.get(resource)).exists();
+    assertThat(ResourceUtil.read(resource)).isNotEmpty();
+    assertThat(ResourceUtil.getUri(resource)).isNotNull();
   }
 
   @ParameterizedTest
   @ValueSource(strings = {"input/emp.xml"})
   void loadXml(String resource) {
-    assertThat(ResourceUtil.get(resource)).exists();
+    assertThat(ResourceUtil.read(resource)).isNotEmpty();
   }
 
   @ParameterizedTest
@@ -59,12 +65,13 @@ class ResourceUtilTest {
         "material/stylesheet/fhir-json-to-xml.xsl",
       })
   void loadXsl(String resource) {
-    assertThat(ResourceUtil.get(resource)).exists();
+    assertThat(ResourceUtil.read(resource)).isNotEmpty();
   }
 
   @Test
   void nonExistingResourceThrows() {
-    assertThat(ResourceUtil.get("non-existing-resource.txt")).isNull();
+    assertThat(ResourceUtil.read("non-existing-resource.txt")).isNull();
+    assertThat(ResourceUtil.getUri("non-existing-resource.txt")).isNull();
   }
 
   @ParameterizedTest
@@ -101,6 +108,38 @@ class ResourceUtilTest {
 
   @Test
   void getAllInput() {
-    assertThat(ResourceUtil.getAllInput()).isNotEmpty();
+    assertThat(ResourceUtil.getAllInput())
+        .containsExactlyInAnyOrder("input/emp.json", "input/emp.xml");
+  }
+
+  @Test
+  void listJarContainsOnlyFilesDirectlyInInput(@TempDir Path temp) throws Exception {
+    var jar = temp.resolve("test.jar");
+    try (var out = new JarOutputStream(Files.newOutputStream(jar))) {
+      for (var name :
+          new String[] {
+            "input/", "input/a.xml", "input/b.json", "input/sub/c.xml", "other/d.xml"
+          }) {
+        out.putNextEntry(new JarEntry(name));
+        out.closeEntry();
+      }
+    }
+    var directory = URI.create("jar:" + jar.toUri() + "!/input/").toURL();
+
+    assertThat(ResourceUtil.list(directory))
+        .containsExactlyInAnyOrder("input/a.xml", "input/b.json");
+  }
+
+  @Test
+  void listDirectoryContainsOnlyRegularFiles(@TempDir Path temp) throws Exception {
+    Files.createDirectory(temp.resolve("sub"));
+    Files.writeString(temp.resolve("a.xml"), "<a/>");
+
+    assertThat(ResourceUtil.list(temp.toUri().toURL())).containsExactly("input/a.xml");
+  }
+
+  @Test
+  void listUnsupportedProtocolIsEmpty() throws Exception {
+    assertThat(ResourceUtil.list(URI.create("http://localhost/input/").toURL())).isEmpty();
   }
 }

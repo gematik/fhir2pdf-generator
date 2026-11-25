@@ -26,68 +26,93 @@ package de.gematik.fhir2pdf.util;
  */
 
 import java.io.IOException;
+import java.net.JarURLConnection;
 import java.net.URI;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystemAlreadyExistsException;
-import java.nio.file.FileSystems;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
+import java.util.Set;
+import java.util.jar.JarEntry;
 import java.util.stream.Collectors;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
-/** Finds files that are packaged inside the application. */
+/** Finds files that are packaged inside the application, on disk as well as inside a JAR. */
 @UtilityClass
 public class ResourceUtil {
 
   private static final String RESOURCE_INPUT = "input/";
 
   /**
-   * Finds a file packaged inside the application.
+   * Finds the location of a file packaged inside the application.
    *
    * @param resourcePath the classpath-relative path, using {@code /}
-   * @return the {@link Path}, or {@code null} if the resource does not exist
+   * @return the {@link URI}, or {@code null} if the resource does not exist
    */
   @SneakyThrows
-  public Path get(String resourcePath) {
+  public URI getUri(String resourcePath) {
     var resource = ResourceUtil.class.getClassLoader().getResource(resourcePath);
-    if (resource == null) {
-      return null;
+    return resource == null ? null : resource.toURI();
+  }
+
+  /**
+   * Reads a file packaged inside the application.
+   *
+   * @param resourcePath the classpath-relative path, using {@code /}
+   * @return the content, or {@code null} if the resource does not exist
+   */
+  @SneakyThrows
+  public byte[] read(String resourcePath) {
+    try (var stream = ResourceUtil.class.getClassLoader().getResourceAsStream(resourcePath)) {
+      return stream == null ? null : stream.readAllBytes();
     }
-    var uri = resource.toURI();
-    return "jar".equals(uri.getScheme()) ? getFromJar(uri) : Path.of(uri);
   }
 
   /**
    * Finds all sample health records bundled with the application.
    *
-   * @return the files in {@code input/} in no guaranteed order; empty if there are none
+   * @return the classpath-relative names of the files in {@code input/}, in no guaranteed order;
+   *     empty if there are none
    */
   @SneakyThrows
-  public Collection<Path> getAllInput() {
-    var directory = get(RESOURCE_INPUT);
-    if (directory == null || !Files.isDirectory(directory)) {
-      return Collections.emptyList();
+  public Collection<String> getAllInput() {
+    var directory = ResourceUtil.class.getClassLoader().getResource(RESOURCE_INPUT);
+    if (directory == null) {
+      return Set.of();
     }
-    try (var inputResources = Files.list(directory)) {
-      return inputResources.collect(Collectors.toSet());
+    return list(directory);
+  }
+
+  Collection<String> list(URL directory) throws IOException, URISyntaxException {
+    return switch (directory.getProtocol()) {
+      case "jar" -> listJar(directory);
+      case "file" -> listDirectory(Path.of(directory.toURI()));
+      default -> Set.of();
+    };
+  }
+
+  Set<String> listJar(URL directory) throws IOException {
+    var connection = (JarURLConnection) directory.openConnection();
+    // A private JarFile that is safe to close, because it is not shared through the JVM cache.
+    connection.setUseCaches(false);
+    try (var jar = connection.getJarFile()) {
+      return jar.stream()
+          .filter(entry -> !entry.isDirectory())
+          .map(JarEntry::getName)
+          .filter(name -> name.startsWith(RESOURCE_INPUT))
+          .filter(name -> name.indexOf('/', RESOURCE_INPUT.length()) < 0)
+          .collect(Collectors.toSet());
     }
   }
 
-  // The file system must stay open: the returned path is bound to it.
-  @SuppressWarnings("java:S2095")
-  private Path getFromJar(URI uri) throws IOException {
-    var parts = uri.toString().split("!", 2);
-    var jarUri = URI.create(parts[0]);
-    FileSystem fileSystem;
-    try (var fs = FileSystems.newFileSystem(jarUri, Map.of())) {
-      fileSystem = fs;
-    } catch (FileSystemAlreadyExistsException _) {
-      fileSystem = FileSystems.getFileSystem(jarUri);
+  Set<String> listDirectory(Path directory) throws IOException {
+    try (var files = Files.list(directory)) {
+      return files
+          .filter(Files::isRegularFile)
+          .map(file -> RESOURCE_INPUT + file.getFileName())
+          .collect(Collectors.toSet());
     }
-    return fileSystem.getPath(parts[1]);
   }
 }
